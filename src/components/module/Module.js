@@ -32,7 +32,7 @@ const Module = ({modules}) => {
                                 <div className='ml-6 inline-flex flex-col items-start font-medium'>
                                     {val.chapters.map((valChap)=>{
                                         return (
-                                            <ChapterText valChap={valChap} chapter={chapter} getSelectChapter={getSelectChapter}/>
+                                            <ChapterText valChap={valChap} chapter={chapter} getSelectChapter={getSelectChapter} key={valChap.id}/>
                                         )
                                     })}
                                 </div> : <></> : <></>}

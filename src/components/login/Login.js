@@ -1,8 +1,6 @@
 import React, {useState, useRef, useEffect} from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {LoginUser, reset} from './../../features/authSlice'
-import axios from "axios"
-// import {useCookies} from 'react-cookie'
+import {LoginUser, Me} from './../../features/authSlice'
 import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
@@ -10,14 +8,17 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
-    const {user, isError, isSuccess, isLoading, message} = useSelector((state)=>state.auth)
+    const {user, isError, isSuccessLogin, isLoading, message} = useSelector((state)=>state.auth)
+    
     useEffect(()=>{
-
-        if(user || isSuccess){
+        if(user || isSuccessLogin){
             navigate('/')
+        } else {
+            dispatch(Me())
+            if(user || isSuccessLogin) navigate('/')
         }
-        dispatch(reset())
-    },[user, isSuccess, dispatch, navigate])
+        // dispatch(reset())
+    },[user, isSuccessLogin])
     const submitForm = (e) => {
         e.preventDefault()
         dispatch(LoginUser({email, password}))

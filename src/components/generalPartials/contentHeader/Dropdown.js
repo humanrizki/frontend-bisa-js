@@ -1,31 +1,20 @@
-import React, { useRef, useState } from 'react'
-import { useCookies } from 'react-cookie'
-import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
-const Dropdown = () => {
-    const [cookie, setCookie, removeCookie] = useCookies(['login'])
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate} from 'react-router-dom'
+import { Logout } from '../../../features/authSlice'
+const Dropdown = ({user}) => {
     const dropdownRef = useRef('')
     const [toggleMenuBool, setToggleMenuBool] = useState(false)
+    const {isSuccessLogout, isLoading, isSuccessLogin} = useSelector(state=>state.auth)
     const navigate = useNavigate()
-    function logout(){
-        axios.defaults.withCredentials = true
-        
-
-        axios.delete('http://backend.bisa_js.test/api/signout', {
-            headers: {
-                'Authorization': `Bearer ${cookie.token}`
-            }
-        }).then((response)=>{
-            console.log(response)
-            // removeCookie('user',{
-            //     path: '/'
-            // });
-            // removeCookie('token',{
-            //     path: '/'
-            // });
-            // navigate('/login')
-        })
-    }
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        console.log('ini berhasil logout')
+        if(isSuccessLogout && !user){
+            navigate('/login')
+        }
+        // navigate()
+    }, [isSuccessLogout])
     return (
         <div className='bisa-js__dropdown w-max relative'>
             <button className={toggleMenuBool ? 'bisa-js__dropdown-toogle w-max py-2 px-4 border border-slate-800 text-white bg-slate-800' : 'bisa-js__dropdown-toogle w-max py-2 px-4 border border-slate-800 bg-transparent text-slate-800'} onClick={()=>{
@@ -34,12 +23,14 @@ const Dropdown = () => {
             }} >Account</button>
             <div className='bisa-js__dropdown-menu w-max absolute top-12 right-0 bg-white border border-slate-800 hidden' ref={dropdownRef}>
                 <div className='bisa-js__dropdown-header p-3'>
-                    <p>{cookie.user.name}</p>
-                    <p className='text-sm font-medium'>{cookie.user.email}</p>
+                    <p>{user.name}</p>
+                    <p className='text-sm font-medium'>{user.email}</p>
                 </div>
                 <hr/>
                 <div className='bisa-js__logout'>
-                    <button onClick={logout.bind(this)}>Logout</button>
+                    <button onClick={()=>{
+                        dispatch(Logout())
+                    }} className='p-3'>{isLoading ? '...Loading':'Logout'}</button>
                 </div>
             </div>
         </div>

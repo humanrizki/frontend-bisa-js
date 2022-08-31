@@ -1,0 +1,8 @@
+.tooltip {
+    background-color: red;
+    color: white;
+}
+.tooltip-hidden{
+    visibility: hidden;
+    pointer-events: none;
+}

@@ -5,7 +5,7 @@ module.exports = {
     './src/components/**/*.{js, jsx}',
     './src/components/**/**/*.{js, jsx}',
     './src/components/**/**/**/*.{js, jsx}',
-    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
+    // 'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
     extend: {},

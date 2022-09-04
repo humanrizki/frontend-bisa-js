@@ -2,9 +2,7 @@ import React, {useEffect} from 'react'
 import {Link, useLocation} from 'react-router-dom'
 const Nav = () => {
     const location = useLocation()
-    useEffect(()=>{
-        console.log(location.pathname)
-    },[])
+
     return (
         <nav className='bisa-js__nav w-max  md:block hidden'>
             <ul className='flex gap-x-8 items-center text-lg'>

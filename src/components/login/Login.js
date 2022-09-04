@@ -1,32 +1,66 @@
 import React, {useState, useRef, useEffect} from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {LoginUser, Me} from './../../features/authSlice'
+import {LoginUser, Me, reset} from './../../features/authSlice'
 import {useNavigate} from 'react-router-dom'
-
+// import { cleanup } from "@testing-library/react"
+import classnames from 'classnames'
 const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
-    const {user, isError, isSuccessLogin, isLoading, message} = useSelector((state)=>state.auth)
-    
+    const {user, isError, isSuccessLogin, isLoading, message: messageAuth, errors} = useSelector((state)=>state.auth)
+    const [message, setMessage] = useState(null)
+    const [error, setError] = useState(false)
+    const [errorsMessage, setErrorsMessage] = useState([])
     useEffect(()=>{
         if(user || isSuccessLogin){
-            navigate('/')
+            setMessage(messageAuth)
+            setError(false)
+            setTimeout(()=>{
+                navigate('/')
+            },2500)
         } else {
+            if(isError){
+                if(errors !== null){
+                    setError(isError)
+                    setMessage(messageAuth)
+                    setErrorsMessage(errors)
+                }
+                // setError(isError)
+                // setMessage(messageAuth)
+            }
+
             dispatch(Me())
             if(user || isSuccessLogin) navigate('/')
         }
-        // dispatch(reset())
-    },[user, isSuccessLogin])
+    },[user, isSuccessLogin, dispatch, navigate, messageAuth, isError, errors])
+    // useEffect(()=>{
+    //     setError(isError)
+    //     setMessage(messageAuth)
+
+    // },[isError, messageAuth, dispatch])
     const submitForm = (e) => {
         e.preventDefault()
         dispatch(LoginUser({email, password}))
     }
     return (
         <div className="w-full h-screen bg-slate-800 flex flex-col justify-center">
-            {isError && 
-                <div className="mb-3 p-2 w-[300px] mx-auto bg-red-800 rounded-lg shadow shadow-white text-white hidden" >{message}</div>
+            {error && 
+                <div className="mb-3 p-2 w-[300px] mx-auto bg-red-800 rounded-lg shadow shadow-white text-white" >
+                    <p className={classnames('text-center','font-medium',{'mb-2':errorsMessage})}>{message}</p>
+                    { errorsMessage !== null && <ul className='list-disc list-inside text-sm w-full'>
+                        { errorsMessage.map((error, index)=>(
+                                <li key={index} className='w-full my-1'>
+                                    {error.message}
+                                </li>
+                            ))}
+                        </ul>
+                    }
+                </div>
+            }
+            {isSuccessLogin && 
+                <div className="mb-3 p-2 w-[300px] mx-auto bg-green-600 rounded-lg shadow shadow-white text-white" >{message}</div>
             }
             <div className="w-[300px] mx-auto p-5 h-max rounded bg-slate-900 text-white shadow shadow-white">
                 

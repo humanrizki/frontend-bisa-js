@@ -12,7 +12,7 @@ import AllCourses from './components/courses/contentCourses/AllCourses';
 import Course from './components/courses/contentCourses/Course';
 import Dashboard from './components/admin/Dashboard';
 import DashboardIndex from './components/admin/contentDashboard/DashboardIndex';
-import Blog from './components/blog/Blog';
+import Blogs from './components/blog/Blogs';
 import store from './store/store'
 import {Provider} from 'react-redux'
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -25,7 +25,7 @@ root.render(
             <Route path="/" element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
-            <Route path="/blog" element={<Blog/>}/>
+            <Route path="/blogs" element={<Blogs/>}/>
             <Route path='/courses' element={<Courses/>}>
               <Route index element={<AllCourses/>}/>
               <Route path=':courseSlug' element={<Course/>}/>

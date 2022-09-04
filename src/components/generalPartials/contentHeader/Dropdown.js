@@ -9,11 +9,9 @@ const Dropdown = ({user}) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(()=>{
-        console.log('ini berhasil logout')
         if(isSuccessLogout && !user){
             navigate('/login')
         }
-        // navigate()
     }, [isSuccessLogout])
     return (
         <div className='bisa-js__dropdown w-max relative'>
